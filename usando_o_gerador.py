@@ -1,7 +1,6 @@
 from random import randint
 from pandas import DataFrame as dt
 from base import *
-sala = list(range(15))
 dados = []
 v = randint(5, 20)
 for p in range(1, v):
@@ -23,7 +22,7 @@ for x in range(0, len(dados)):
             dados[x][0] = dados[z][0]
             dados[z][0] = y
             
-# Uso o pandas mais para deixar os dados mais apresentaveis
+# Uso o pandas para deixar os dados mais apresentaveis
 b = dt(dados, index=range(1, v), columns=['Aluno', 'Nota 1', 'Nota 2', 'Nota 3', 'Nota 4', 'Media', 'Status'])
 
 
