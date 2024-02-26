@@ -40,12 +40,6 @@ class Aluno:
             r += x
         me = r / len(self.notas)
         return me
-    def registrar(self):
-        comando = f'''insert into alunos (nome)
-                    value ('{self.nome}')'''
-        cursor.execute(comando)
-        conexao.commit()
-
 
 class Escola():
     def __init__(self, nome, limite_alunos):
@@ -68,4 +62,31 @@ class Matricula:
         self.escola = escola
 
     def __str__(self):
-        return self.aluno
+        return f'{self.aluno} {self.escola}'
+
+    def registrar(self):
+        comando1 = f"""
+        select count(*) from escolas
+        where nome = '{self.escola}'
+        """
+        cursor.execute(comando1)
+        validacao = cursor.fetchone()[0]
+        if validacao > 0:
+            comando2 = f"""
+                        insert into alunos(nome, escola)
+                        values ('{self.aluno}', '{self.escola}')
+                        """
+            comando3 = f"""
+                        update escolas 
+                        set quant_atual = quant_atual + 1
+                        where nome = '{self.escola}'
+                        """
+            cursor.execute(comando2 + ";" + comando3)
+        else:
+            print(f'Digite uma escola cadastrada')
+
+es = Escola('Zeze', 300)
+al = Aluno('Marcos', 25)
+es.registrar()
+mat = Matricula(al.nome, es.nome)
+mat.registrar()
